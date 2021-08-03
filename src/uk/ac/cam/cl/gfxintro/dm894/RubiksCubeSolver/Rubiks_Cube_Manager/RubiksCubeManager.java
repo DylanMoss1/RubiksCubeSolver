@@ -5,6 +5,7 @@ import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.Camera;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_Cube_Manager.Rubiks_Cube.RubiksCube;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_CFOP.Managers.CFOP_Manager;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.SkyBox;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.ConstructCubie;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,10 @@ public class RubiksCubeManager {
 
     public void createCube(){
         mainRubiksCube = new RubiksCube();
+    }
+
+    public void createCube(ConstructCubie[][][] cubieList){
+        mainRubiksCube = new RubiksCube(cubieList);
     }
 
     public void setSkyBox(SkyBox skyBox){
@@ -45,84 +50,86 @@ public class RubiksCubeManager {
 
     public void solveLayer(){
         String[] moves = CFOP_Manager.solveLayer(mainRubiksCube.renderCubiesList);
-        System.out.println("MOVES");
-        System.out.println(Arrays.toString(moves));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("MOVES:");
+        System.out.println(Arrays.toString(sanitise(moves)));
 
         String[] makeMoves = moveOptimise(moves);
-        System.out.println(Arrays.toString(makeMoves));
-        makeMove(makeMoves);
+        //System.out.println(Arrays.toString(makeMoves));
+        makeMove(moves);
 
         String[] printMove = printOptimise(moves);
-        System.out.println(Arrays.toString(printMove));
+        //System.out.println(Arrays.toString(printMove));
     }
 
     public String[] moveOptimise(String[] moves){
 
         moves = split(moves);
 
-        LinkedList<String> oldMoves = new LinkedList<>();
-        LinkedList<String> newMoves1;
-        LinkedList<String> newMoves2 = new LinkedList<>();
+        ArrayList<String> oldMoves = new ArrayList<>();
+        ArrayList<String> newMoves = new ArrayList<>();
 
         for(String move : moves){
             oldMoves.add(move);
         }
 
         int count;
-        int newCount;
+        int rot;
+        int newRot;
         int storeCount;
         boolean complete = false;
 
+        for(String move : moves){
+            oldMoves.add(move);
+        }
+
         while(!complete) {
+            //System.out.println("repeat");
             storeCount = 0;
-            newMoves1 = new LinkedList<>();
-            newMoves2 = new LinkedList<>();
+            newMoves = new ArrayList<>();
             for (int i = 0; i < oldMoves.size(); i++) {
-                count = 0;
-                while (i + count < oldMoves.size()) {
-                    if (oldMoves.get(i + count) == oldMoves.get(i)) {
-                        count++;
-                    } else {
-                        break;
+
+                char first = oldMoves.get(i).charAt(0);
+                if (first == 'z' || first == 'v' || first == 'e' || first == 'q' || first == 'w' || first == 'g' || first == 'o') {
+                    newMoves.add(oldMoves.get(i));
+                } else {
+                    count = 0;
+                    rot = 0;
+                    while (i + count < oldMoves.size()) {
+                        if (oldMoves.get(i + count).substring(0, 1).equals(oldMoves.get(i).substring(0, 1))) {
+                            rot += getRot(oldMoves.get(i + count));
+                            count++;
+                        } else {
+                            break;
+                        }
                     }
-                }
-                if(storeCount <= 0) {
-                    newCount = count % 4;
-                    storeCount = count;
-                    if (newCount == 1) {
-                        newMoves1.add(oldMoves.get(i));
-                    } else if (newCount == 2) {
-                        newMoves1.add(oldMoves.get(i));
-                        newMoves1.add(oldMoves.get(i));
-                    } else if (newCount == 3) {
-                        newMoves1.add(reverseMove(oldMoves.get(i)));
-                    } else {
-                        break;
+                    if (storeCount <= 0) {
+                        newRot = rot % 4;
+
+                        if (newRot < 0) {
+                            newRot += 4;
+                        }
+
+                        storeCount = count;
+                        if (newRot != 0) {
+                            newMoves.add(findRotMove(newRot, oldMoves.get(i)));
+                        }
                     }
                 }
                 storeCount--;
             }
 
-            for (int i = 0; i < newMoves1.size(); i++) {
-                if (i + 1 < newMoves1.size()) {
-                    if (!(newMoves1.get(i) == reverseMove(newMoves1.get(i+1)))){
-                        newMoves2.add(newMoves1.get(i));
-                    }
-                } else {
-                    newMoves2.add(newMoves1.get(i));
-                }
-            }
-
-            if(oldMoves.equals(newMoves2)){
+            if(oldMoves.equals(newMoves)){
                 complete = true;
             }
 
-            oldMoves = newMoves2;
+            oldMoves = newMoves;
         }
 
-        String[] newMovesArr = new String[newMoves2.size()];
-        for(int j=0; j<newMoves2.size(); j++){
-            newMovesArr[j] = newMoves2.get(j);
+        String[] newMovesArr = new String[newMoves.size()];
+        for(int j=0; j<newMoves.size(); j++){
+            newMovesArr[j] = newMoves.get(j);
         }
         return newMovesArr;
     }
@@ -132,11 +139,10 @@ public class RubiksCubeManager {
         moves = sanitise(moves);
         moves = split(moves);
 
-        System.out.println(Arrays.toString(moves));
+        //System.out.println(Arrays.toString(moves));
 
-        LinkedList<String> oldMoves = new LinkedList<>();
-        LinkedList<String> newMoves1;
-        LinkedList<String> newMoves2 = new LinkedList<>();
+        ArrayList<String> oldMoves = new ArrayList<>();
+        ArrayList<String> newMoves = new ArrayList<>();
 
         for(String move : moves){
             oldMoves.add(move);
@@ -151,8 +157,7 @@ public class RubiksCubeManager {
         while(!complete) {
             //System.out.println("repeat");
             storeCount = 0;
-            newMoves1 = new LinkedList<>();
-            newMoves2 = new LinkedList<>();
+            newMoves = new ArrayList<>();
             for (int i = 0; i < oldMoves.size(); i++) {
                 count = 0;
                 rot = 0;
@@ -185,32 +190,22 @@ public class RubiksCubeManager {
                     storeCount = count;
                     if(newRot != 0) {
                         //System.out.println(findRotMove(newRot, oldMoves.get(i)));
-                        newMoves1.add(findRotMove(newRot, oldMoves.get(i)));
+                        newMoves.add(findRotMove(newRot, oldMoves.get(i)));
                     }
                 }
                 storeCount--;
             }
 
-            for (int i = 0; i < newMoves1.size(); i++) {
-                if (i + 1 < newMoves1.size()) {
-                    if (!(newMoves1.get(i).equals(reverseMove(newMoves1.get(i+1))))){
-                        newMoves2.add(newMoves1.get(i));
-                    }
-                } else {
-                    newMoves2.add(newMoves1.get(i));
-                }
-            }
-
-            if(oldMoves.equals(newMoves2)){
+            if(oldMoves.equals(newMoves)){
                 complete = true;
             }
 
-            oldMoves = newMoves2;
+            oldMoves = newMoves;
         }
 
-        String[] newMovesArr = new String[newMoves2.size()];
-        for(int j=0; j<newMoves2.size(); j++){
-            newMovesArr[j] = newMoves2.get(j);
+        String[] newMovesArr = new String[newMoves.size()];
+        for(int j=0; j<newMoves.size(); j++){
+            newMovesArr[j] = newMoves.get(j);
         }
         return newMovesArr;
     }
@@ -385,7 +380,7 @@ public class RubiksCubeManager {
         for(int i=0; i<algList.size(); i++){
             alg.add(algList.get(i));
         }
-        Collections.reverse(alg);
+
         return alg;
     }
 

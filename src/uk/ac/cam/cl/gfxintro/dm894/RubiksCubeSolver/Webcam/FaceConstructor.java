@@ -1,4 +1,4 @@
-package Webcam;
+package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam;
 
 import java.util.Arrays;
 
@@ -77,8 +77,27 @@ public class FaceConstructor {
         }
 
         if(allFilled){
-            System.out.println("FINISHED!!!");
+            System.out.println("FINISHED:");
+            System.out.println(Arrays.deepToString(cube));
+            printTestCode(cube);
+            ColourChecker.finished = true;
             CubeConstructor.constructCube(cube);
         }
+    }
+
+    public static void printTestCode(String[][][] cube){
+
+        String sides = Arrays.deepToString(cube);
+
+        sides = sides.replace("[","{");
+        sides = sides.replace("]","}");
+        sides = sides.replace("R","\"R\"");
+        sides = sides.replace("O","\"O\"");
+        sides = sides.replace("Y","\"Y\"");
+        sides = sides.replace("G","\"G\"");
+        sides = sides.replace("B","\"B\"");
+        sides = sides.replace("W","\"W\"");
+
+        System.out.printf("\nString[][][] face = %s;",sides);
     }
 }

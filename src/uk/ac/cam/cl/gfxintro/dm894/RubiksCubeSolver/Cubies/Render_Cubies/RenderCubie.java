@@ -33,6 +33,12 @@ public class RenderCubie extends Cubie {
         createTexture();
     }
 
+    public RenderCubie(int index, int i, int j, int k, Matrix3f orientation, int timeConstant) {
+        super(index, i, j, k, orientation);
+        scale = 1/((float) timeConstant)/2;
+        createTexture();
+    }
+
     public void createTexture(){
         cube_mesh = new CubeMesh();
 
@@ -43,7 +49,7 @@ public class RenderCubie extends Cubie {
 
         // Initialise Texturing
         cube_texture = new Texture();
-        cube_texture.load("resources/cubemap.png");
+        cube_texture.load("resources/rubiksCubeMap.png");
         cube_texture.bindTexture();
     }
 

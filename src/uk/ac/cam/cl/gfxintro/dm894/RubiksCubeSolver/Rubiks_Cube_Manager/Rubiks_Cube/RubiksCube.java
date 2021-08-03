@@ -1,8 +1,12 @@
 package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_Cube_Manager.Rubiks_Cube;
 
+import org.joml.Matrix3f;
+import org.joml.Vector3f;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.Camera;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Cubies.Render_Cubies.RenderCubie;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.SkyBox;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.RubiksCubeSolver;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.ConstructCubie;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,15 +32,17 @@ public class RubiksCube {
 	public boolean nextMove = true;
 	public int moveCounter = 0;
 	String currentMove = "";
-	public int timeConstant = 1;
+	public int timeConstant;
 
 	public RubiksCube() {
 
-		if(preprogram) {
+		timeConstant = RubiksCubeSolver.frame_delay;
+
+		if (preprogram) {
 			Scanner sc = new Scanner(System.in);
 			movesInput = sc.nextLine();
 			movesArray = movesInput.split(" ");
-			for(String moves : movesArray){
+			for (String moves : movesArray) {
 				movesList.add(moves);
 			}
 		}
@@ -45,17 +51,66 @@ public class RubiksCube {
 			for (int j = -1; j <= 1; j++) {
 				for (int k = -1; k <= 1; k++) {
 					int index = (i + 1) + (j + 1) * 3 + (k + 1) * 9;
-					if(i != 0 && j != 0 && k != 0) {
-						renderCubiesList[i + 1][j + 1][k + 1] = new RenderCubie(index, i, j, k, timeConstant);
-					} else {
-						renderCubiesList[i + 1][j + 1][k + 1] = new RenderCubie(index,i, j, k, timeConstant);
-					}
+					renderCubiesList[i + 1][j + 1][k + 1] = new RenderCubie(index, i, j, k, timeConstant);
 				}
 			}
 		}
 	}
 
-	public void move(String move){
+	public RubiksCube(ConstructCubie[][][] cubieList) {
+
+		timeConstant = RubiksCubeSolver.frame_delay;
+
+		if (preprogram) {
+			Scanner sc = new Scanner(System.in);
+			movesInput = sc.nextLine();
+			movesArray = movesInput.split(" ");
+			for (String moves : movesArray) {
+				movesList.add(moves);
+			}
+		}
+
+		ArrayList<Integer> numList = new ArrayList<>();
+
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				for (int k = -1; k <= 1; k++) {
+					ConstructCubie constructCubie = cubieList[i + 1][j + 1][k + 1];
+					ConstructCubie constructCubie2 = cubieList[i + 1][j + 1][2 - (k + 1)];
+					numList.add(constructCubie.index);
+					int index = constructCubie.index;
+					Vector3f position = constructCubie.position;
+					Matrix3f orientation = constructCubie2.orientation;
+					renderCubiesList[i + 1][j + 1][k + 1] = new RenderCubie(index, (int) position.x - 1, (int) position.y - 1, (int) position.z - 1, orientation, timeConstant);
+					/*
+					if (index == 6) {
+						System.out.println(position.x);
+						System.out.println(position.y);
+						System.out.println(position.z);
+						System.out.println(orientation);
+						System.out.println("Hmmmmmmm");
+						RenderCubie renderCubie = renderCubiesList[0][2][0];
+
+						System.out.println(renderCubie.position);
+						System.out.println(renderCubie.orientation);
+					}
+
+					 */
+				}
+			}
+		}
+
+		Collections.sort(numList);
+		//System.out.println(numList.toString());
+
+		//System.out.println("####");
+		RenderCubie renderCubie = renderCubiesList[2][1][0];
+
+		//System.out.println(renderCubie.position);
+		//System.out.println(renderCubie.orientation);
+	}
+
+	public void move(String move) {
 		movesList.add(move);
 	}
 
@@ -63,21 +118,26 @@ public class RubiksCube {
 
 		makeMove();
 
+		RenderCubie renderCubie = renderCubiesList[2][1][0];
+
 		for (RenderCubie[][] cubie1 : renderCubiesList) {
 			for (RenderCubie[] cubie2 : cubie1) {
 				for (RenderCubie cubie : cubie2) {
-					cubie.render(camera, currentMove);
+					if (cubie != null) {
+						cubie.render(camera, currentMove);
+					}
 				}
 			}
 		}
+
 	}
 
-	public void makeMove(){
+	public void makeMove() {
 		boolean doubled = false;
 		boolean wait = false;
 
-		if(nextMove){
-			if(algList.size() != 0){
+		if (nextMove) {
+			if (algList.size() != 0) {
 				currentMove = algList.get(0);
 				if (currentMove.length() == 2) {
 					char first = currentMove.charAt(0);
@@ -90,47 +150,24 @@ public class RubiksCube {
 				moveCounter = 0;
 				algList.remove(0);
 				nextMove = false;
-				if(doubled){
+				if (doubled) {
 					Collections.reverse(algList);
 					algList.add(currentMove);
 					Collections.reverse(algList);
 				}
-			} else if(movesList.size() != 0){
+			} else if (movesList.size() != 0) {
 				currentMove = movesList.get(0);
 				if (currentMove.length() == 2) {
 					char first = currentMove.charAt(0);
 					char second = currentMove.charAt(1);
-					/*
-					if(first == 'e' && second == '1') {
 
+					if (first == 'z' || first == 'v' || first == 'e' || first == 'q' || first == 'w' || first == 'g' || first == 'o') {
 						wait = true;
 						currentMove = "";
 						movesList.remove(0);
 						Collections.reverse(movesList);
-
-						movesList.add("FP");
-						movesList.add("UP");
-						movesList.add("F");
-						movesList.add("U");
-						movesList.add("L");
-						movesList.add("U");
-						movesList.add("LP");
-						movesList.add("UP");
-
-						Collections.reverse(movesList);
-
-					*/
-					if(first == 'z' || first == 'v' || first == 'e' || first == 'q' || first == 'w' || first == 'g' || first == 'o'){
-						//algList = findAlg(first,second);
-						//currentMove = "";
-
-
-						wait = true;
-						currentMove = "";
-						movesList.remove(0);
-						Collections.reverse(movesList);
-						ArrayList<String> newAlg = findAlg(first,second);
-						for(int i=0; i< newAlg.size(); i++){
+						ArrayList<String> newAlg = findAlg(first, second);
+						for (int i = 0; i < newAlg.size(); i++) {
 							movesList.add(newAlg.get(i));
 						}
 						Collections.reverse(movesList);
@@ -138,19 +175,13 @@ public class RubiksCube {
 						currentMove = String.valueOf(first);
 						doubled = true;
 					}
-				} /*else if(currentMove.length() == 3){
-					movesList.remove(0);
-					//makeMove();
-					//perm("T");
-					nextMove = true;
 				}
-				*/
 				moveCounter = 0;
-				if(!wait) {
+				if (!wait) {
 					movesList.remove(0);
 					nextMove = false;
 				}
-				if(doubled){
+				if (doubled) {
 					Collections.reverse(movesList);
 					movesList.add(currentMove);
 					Collections.reverse(movesList);
@@ -160,32 +191,30 @@ public class RubiksCube {
 			}
 		}
 
-		if(currentMove != "") {
+		if (currentMove != "") {
 			if (moveCounter == timeConstant - 1) {
-				//System.out.println(currentMove);
 				nextMove = true;
 				reconstructCubeList();
-				//makeMove();
 			} else {
 				moveCounter++;
 			}
 		}
 	}
 
-	public ArrayList<String> findAlg(char first, char second){
+	public ArrayList<String> findAlg(char first, char second) {
 
 		LinkedList<String> algList = new LinkedList<>();
 		ArrayList<String> alg = new ArrayList<>();
 
-		if(second == '2'){
+		if (second == '2') {
 			algList.add("y");
-		} else if(second == '3'){
+		} else if (second == '3') {
 			algList.add("y2");
-		} else if(second == '4'){
+		} else if (second == '4') {
 			algList.add("yP");
 		}
 
-		if(first == 'q'){
+		if (first == 'q') {
 			algList.add("U");
 			algList.add("R");
 			algList.add("UP");
@@ -194,19 +223,7 @@ public class RubiksCube {
 			algList.add("FP");
 			algList.add("U");
 			algList.add("F");
-		} else if (first == 'e'){
-			/*
-			algList.add("UP");
-			algList.add("LP");
-			algList.add("U");
-			algList.add("L");
-			algList.add("U");
-			algList.add("F");
-			algList.add("UP");
-			algList.add("FP");
-
-			 */
-
+		} else if (first == 'e') {
 			algList.add("UP");
 			algList.add("LP");
 			algList.add("UP");
@@ -215,28 +232,27 @@ public class RubiksCube {
 			algList.add("F");
 			algList.add("U");
 			algList.add("FP");
-
-		} else if (first == 'w'){
+		} else if (first == 'w') {
 			algList.add("FP");
 			algList.add("UP");
 			algList.add("F");
-		} else if (first == 'z'){
+		} else if (first == 'z') {
 			algList.add("F");
 			algList.add("U");
 			algList.add("FP");
-		} else if (first == 'v'){
+		} else if (first == 'v') {
 			algList.add("FP");
 			algList.add("LP");
 			algList.add("U");
 			algList.add("U");
 			algList.add("L");
 			algList.add("F");
-		} else if (first == 'o'){
+		} else if (first == 'o') {
 			algList.add("R");
 			algList.add("U");
 			algList.add("RP");
 			algList.add("UP");
-		} else if (first == 'g'){
+		} else if (first == 'g') {
 			algList.add("R");
 			algList.add("U");
 			algList.add("RP");
@@ -252,84 +268,30 @@ public class RubiksCube {
 			algList.add("F");
 		}
 
-		if(second == '2'){
+		if (second == '2') {
 			algList.add("yP");
-		} else if(second == '3'){
+		} else if (second == '3') {
 			algList.add("y2");
-		} else if(second == '4'){
+		} else if (second == '4') {
 			algList.add("y");
 		}
 
-		for(int i=0; i<algList.size(); i++){
+		for (int i = 0; i < algList.size(); i++) {
 			alg.add(algList.get(i));
 		}
 		Collections.reverse(alg);
 		return alg;
 	}
-/*
-	public void makeMove(){
-		reconstructCubeList();
-		checkSolved();
-	}
-	*/
 
-	public void reconstructCubeList(){
+	public void reconstructCubeList() {
 		RenderCubie[][][] newCubiesList = new RenderCubie[3][3][3];
 		for (RenderCubie[][] cubie1 : renderCubiesList) {
 			for (RenderCubie[] cubie2 : cubie1) {
 				for (RenderCubie cubie : cubie2) {
-					newCubiesList[Math.round(cubie.position.x+1)][Math.round(cubie.position.y+1)][Math.round(cubie.position.z+1)] = cubie;
+					newCubiesList[Math.round(cubie.position.x + 1)][Math.round(cubie.position.y + 1)][Math.round(cubie.position.z + 1)] = cubie;
 				}
 			}
 		}
 		renderCubiesList = newCubiesList;
 	}
-
-/*
-	public void checkSolved(){
-		boolean solved = true;
-		for (int i = -1; i <= 1; i++) {
-			for (Cubie[][] cubie1 : renderCubiesList) {
-				for (Cubie[] cubie2 : cubie1) {
-					for (Cubie cubie : cubie2) {
-						if(!cubie.positionCorrect()){
-							solved = false;
-						}
-					}
-				}
-			}
-		}
-		if(solved){
-			System.out.println("Solved Cube");
-		}
-	}
-
- */
-/*
-	public void solveLayer(String layer){
-		if(layer.equals("PLL")){
-			String[] newMoves = CFOP_P.Apply(renderCubiesList);
-			for(String move : newMoves){
-				movesList.add(move);
-			}
-			System.out.println(movesList);
-		}
-	}
-
- */
-	/*
-
-	public Cubie[][][] copyCube() {
-		Cubie[][][] newCubieList = new Cubie[3][3][3];
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				for (int k = 0; k < 3; k++) {
-					newCubieList[i][j][k] = renderCubiesList[i][j][k].copy();
-				}
-			}
-		}
-		return newCubieList;
-	}
-
-	 */
 }

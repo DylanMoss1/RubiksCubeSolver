@@ -45,8 +45,6 @@ public abstract class CFOP_OLL extends CFOP_OLL_PLL {
             }
             newMoves[0] = rotMoves[numRot];
         }
-        System.out.println(OLL_Message);
-        System.out.println(Arrays.toString(newMoves));
         return newMoves;
     }
 

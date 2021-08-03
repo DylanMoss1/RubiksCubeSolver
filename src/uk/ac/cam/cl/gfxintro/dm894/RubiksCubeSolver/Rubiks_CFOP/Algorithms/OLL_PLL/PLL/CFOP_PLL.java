@@ -70,8 +70,6 @@ public class CFOP_PLL extends CFOP_OLL_PLL {
             newMoves[length-1] = rotMoves[afterRot];
         }
 
-        System.out.println("PLL COMPLETE");
-        System.out.println(Arrays.toString(newMoves));
         return newMoves;
     }
 
@@ -95,6 +93,7 @@ public class CFOP_PLL extends CFOP_OLL_PLL {
                 }
             }
         }
+
         return complete;
     }
 

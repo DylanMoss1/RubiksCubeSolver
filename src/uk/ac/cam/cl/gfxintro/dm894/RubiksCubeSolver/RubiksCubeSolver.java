@@ -1,8 +1,13 @@
 package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver;
 
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.OpenGLApplication;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_Cube_Manager.RubiksCubeManager;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.MyFrame;
 
 public class RubiksCubeSolver {
+
+    public static int frame_delay = 1;
+    public static boolean webcam = false;
 
     public static void usageError() {
         System.err.println("USAGE: <RubiksCubeSolver> [--output OUTPUT]");
@@ -26,6 +31,12 @@ public class RubiksCubeSolver {
                 usageError();
             }
         }
+        run();
+    }
+
+    public static void run(){
+
+        String output = null;
 
         OpenGLApplication app = null;
         try {
@@ -38,8 +49,8 @@ public class RubiksCubeSolver {
                 app.run();
             }
         } catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+            e.printStackTrace();
+        } finally {
             if (app != null)
                 app.stop();
         }

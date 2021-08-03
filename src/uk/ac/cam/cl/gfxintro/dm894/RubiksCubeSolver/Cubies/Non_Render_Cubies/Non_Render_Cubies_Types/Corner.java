@@ -11,10 +11,6 @@ public class Corner extends NonRenderCubie {
 
     @Override
     public boolean cubieCorrect(){
-        if(positionCorrect() && orientationCorrect()){
-            return true;
-        } else {
-            return false;
-        }
+        return positionCorrect() && orientationCorrect();
     }
 }

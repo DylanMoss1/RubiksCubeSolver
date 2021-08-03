@@ -1,12 +1,10 @@
-package Webcam;//Credits to computervisionandjava for parts of webcam code
+package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam;//Credits to computervisionandjava for parts of webcam code
 //http://computervisionandjava.blogspot.com/2013/10/java-opencv-webcam.html
 
 import java.awt.image.BufferedImage;
 
-import Webcam.ColourChecker;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
 
 public class Mat2Image {

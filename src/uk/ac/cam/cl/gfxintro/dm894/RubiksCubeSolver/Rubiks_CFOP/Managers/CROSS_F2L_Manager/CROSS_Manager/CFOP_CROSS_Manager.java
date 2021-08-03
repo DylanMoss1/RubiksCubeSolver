@@ -7,9 +7,8 @@ public class CFOP_CROSS_Manager {
     public static String[] solveLayer(Cubie[][][] cubieList) {
 
         CFOP_CROSS cfop_cross = new CFOP_CROSS();
-
         String[] cfop_cross_moves = cfop_cross.solveLayer(cubieList);
-        System.out.println("cross");
         return cfop_cross_moves;
+
     }
 }

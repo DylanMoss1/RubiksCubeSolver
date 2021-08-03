@@ -4,66 +4,35 @@ import java.util.Arrays;
 
 public class ColourChecker {
 
+    public static boolean finished = false;
     public static int calIndex = 0;
 
-    //New video
+    static int[] redColour = {165,31,19};
+    static int[] orangeColour = {201,99,46};
+    static int[] yellowColour = {170,182,81};
+    static int[] greenColour = {4,124,82};
+    static int[] blueColour = {7,49,152};
+    static int[] whiteColour = {213,208,217};
+    static int[] whiteCentreColour = {186,182,183};
+
+
     /*
-    static int[] redColour = {131,24,34};
-    static int[] orangeColour = {144,56,31};
-    static int[] yellowColour = {110,129,66};
-    static int[] greenColour = {0,95,51};
-    static int[] blueColour = {0,46,131};
-    static int[] whiteColour = {97,129,150};
-    static int[] whiteCentreColour = {64,80,95};
+    static int[] redColour = {175,46,1};
+    static int[] orangeColour = {218,113,28};
+    static int[] yellowColour = {233,208,97};
+    static int[] greenColour = {79,128,78};
+    static int[] blueColour = {23,56,134};
+    static int[] whiteColour = {251,225,208};
+    static int[] whiteCentreColour = {221,200,184};
 
      */
 
-
-    //New picker
-    
-    /*
-    static int[] redColour = {156,34,47};
-    static int[] orangeColour = {172,77,61};
-    static int[] yellowColour = {125,166,107};
-    static int[] greenColour = {0,132,126};
-    static int[] blueColour = {0,89,196};
-    static int[] whiteColour = {110,166,224};
-    static int[] whiteCentreColour = {85,102,114};
-     */
-    
-    //Old video
-    /*
-    static int[] redColour = {120,20,17};
-    static int[] orangeColour = {174,94,55};
-    static int[] yellowColour = {153,159,81};
-    static int[] greenColour = {0,75,42};
-    static int[] blueColour = {0,30,122};
-    static int[] whiteColour = {109,139,168};
-    static int[] whiteCentreColour = {91,115,134};
-     */
-
-    /*
-    static int[] redColour = {216,61,44};
-    static int[] orangeColour = {254,128,45};
-    static int[] yellowColour = {255,234,90};
-    static int[] greenColour = {90,162,108};
-    static int[] blueColour = {9,89,186};
-    static int[] whiteColour = {254,249,254};
-    static int[] whiteCentreColour = {230,221,223};
-
-     */
-
-    static int[] redColour = {142,53,89};
-    static int[] orangeColour = {158,100,102};
-    static int[] yellowColour = {127,174,139};
-    static int[] greenColour = {0,121,125};
-    static int[] blueColour = {0,51,232};
-    static int[] whiteColour = {81,168,255};
-    static int[] whiteCentreColour = {68,151,244};
 
     static String[] colourNameArray = {"R","O","Y","G","B","W"};
     static String[] fullColourNameArray = {"redColour","orangeColour","yellowColour","greenColour","blueColour","whiteColour","whiteCentreColour"};
     static int[][] colourValueArray = {redColour,orangeColour,yellowColour,greenColour,blueColour,whiteColour,whiteCentreColour};
+
+    static int distance = 60;
 
     public static void colourCondense(int[][][][][] colourPanel){
         int[][][] condensedColourPanel = new int[3][3][3];
@@ -124,10 +93,10 @@ public class ColourChecker {
 
         checkFaceComplete(colourConvert);
 
-        System.out.println(Arrays.deepToString(colourConvert));
-        System.out.println(" ");
-
-
+        if(!finished){
+            System.out.println(Arrays.deepToString(colourConvert));
+            System.out.println(" ");
+        }
     }
 
     public static String colourDistance(int R,int G,int B, boolean centre){
@@ -147,13 +116,13 @@ public class ColourChecker {
             }
         }
 
-        if(distanceArray[minValueIndex] < 50){
+        if(distanceArray[minValueIndex] < distance){
             return colourNameArray[minValueIndex];
         } else {
             if(!centre) {
                 return " ";
             } else {
-                if(Math.sqrt(Math.pow((R-colourValueArray[6][0]),2) + Math.pow((G-colourValueArray[6][1]),2) + Math.pow((B-colourValueArray[6][2]),2)) < 50){
+                if(Math.sqrt(Math.pow((R-colourValueArray[6][0]),2) + Math.pow((G-colourValueArray[6][1]),2) + Math.pow((B-colourValueArray[6][2]),2)) < distance){
                     return colourNameArray[5];
                 } else {
                     return " ";

@@ -24,8 +24,6 @@ public class CFOP_OLL_PLL_Manager{
         String[] moves = Arrays.copyOf(moves1, moves1.length + moves2.length);
         System.arraycopy(moves2, 0, moves, moves1.length, moves2.length);
 
-        System.out.println("OLL");
-        System.out.println(Arrays.toString(moves1));
         return moves;
     }
 }

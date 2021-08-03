@@ -9,7 +9,6 @@ public class CFOP_F2L_1_Manager {
         CFOP_F2L_1 cfop_f2l_1 = new CFOP_F2L_1();
 
         String[] cfop_f2l_1_moves = cfop_f2l_1.solveLayer(cubieList);
-        System.out.println("f2l_1");
         return cfop_f2l_1_moves;
     }
 }

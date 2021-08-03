@@ -13,7 +13,6 @@ public class CFOP_OLL_Manager {
     public static String[] solveLayer(Cubie[][][] cubieList) {
 
         String[] moves1 = CFOP_OLL_1_Manager.solveLayer(cubieList);
-        //System.out.println(moves1);
 
         Cubie[][][] newCubieList = CFOP_Manager_Commands.copyCubieList(cubieList);
 

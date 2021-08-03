@@ -1,14 +1,13 @@
-package Webcam;
+package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam;
 
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class constructCubie {
+public class ConstructCubie {
 
     public String colour1;
     public String colour2;
@@ -101,19 +100,19 @@ public class constructCubie {
             orientationCorner(moves);
         }
 
-
-        //TODO test this
-
-        Collections.reverse(moves);
-
         for(int i=0; i<moves.size(); i++){
             if(moves.get(i).equals("x")){
-                orientation = xMove(orientation);
+                orientation = applyX(orientation);
+            } else if(moves.get(i).equals("y")) {
+                orientation = applyY(orientation);
             } else {
-                orientation = yMove(orientation);
+                orientation = applyZ(orientation);
             }
         }
+
+        //orientation.invert(orientation);
     }
+
 
     public void orientationEdge(ArrayList<String> moves){
 
@@ -125,12 +124,14 @@ public class constructCubie {
         String checkFace1;
         String checkFace2;
 
-        if(colour1 == "null"){
+        //System.out.println(face2);
+
+        if(colour1 == null){
             mainColour1 = colour2;
             mainColour2 = colour3;
             checkFace1 = face2;
             checkFace2 = face3;
-        } else if(colour2 == "null"){
+        } else if(colour2 == null){
             mainColour1 = colour1;
             mainColour2 = colour3;
             checkFace1 = face1;
@@ -141,23 +142,66 @@ public class constructCubie {
             checkFace1 = face1;
             checkFace2 = face2;
         }
+        //System.out.println("");
+
+        //System.out.println(mainColour2);
+        //System.out.println(checkFace2);
 
         for(int i=0; i<4; i++){
             for(int j=0; j<4; j++){
-                newFace1 = move(i, mainColour1);
-                newFace2 = move(i, mainColour2);
-                if(checkOrientation(newFace1, newFace2, checkFace1, checkFace2)){
-                    for(int k=0; k<i; k++){
-                        moves.add("x");
+                for(int k=0; k<4; k++){
+                    newFace1 = move(i, j, k, mainColour1);
+                    newFace2 = move(i, j, k, mainColour2);
+                    if(checkOrientation(newFace1, newFace2, checkFace1, checkFace2)) {
+                        for (int m = 0; m < i; m++) {
+                            moves.add("x");
+                            //System.out.println("change x");
+                        }
+                        for (int l = 0; l < j; l++) {
+                            moves.add("y");
+                            //System.out.println("change y");
+                        }
+                        for (int n = 0; n < k; n++) {
+                            moves.add("z");
+                            //System.out.println("change z");
+                        }
+                        //System.out.println("found orientation");
+                        /*
+                        System.out.println("### - Edge (complete)");
+                        System.out.println(index);
+                        System.out.println(colour1);
+                        System.out.println(colour2);
+                        System.out.println(colour3);
+                        System.out.println(position);
+
+                         */
+                        return;
                     }
-                    for(int l=0; l<j; l++){
-                        moves.add("y");
-                    }
-                    return;
                 }
             }
         }
-        System.out.println("orientation not found");
+        //System.out.println("not found orientation");
+        /*
+        System.out.println("### - Edge (uncomplete)");
+        System.out.println(index);
+        System.out.println(colour1);
+        System.out.println(colour2);
+        System.out.println(colour3);
+        System.out.println(position);
+
+         */
+
+
+        //System.out.println(position);
+        /*
+        System.out.println("orientation not found - Edge");
+        System.out.println(colour1);
+        System.out.println(colour2);
+        System.out.println(colour3);
+        System.out.println(position);
+        System.out.println("");
+
+         */
     }
 
 
@@ -167,35 +211,92 @@ public class constructCubie {
         String newFace2;
         String newFace3;
 
+
         for(int i=0; i<4; i++){
             for(int j=0; j<4; j++){
-                newFace1 = move(i, colour1);
-                newFace2 = move(i, colour2);
-                newFace3 = move(i, colour3);
-                if(checkOrientation(newFace1, newFace2, newFace3)){
-                    for(int k=0; k<i; k++){
-                        moves.add("x");
+                for(int k=0; k<4; k++){
+                    newFace1 = move(i, j, k, colour1);
+                    newFace2 = move(i, j, k, colour2);
+                    newFace3 = move(i, j, k, colour3);
+                    if(checkOrientation(newFace1, newFace2, newFace3)) {
+                        for (int m = 0; m < i; m++) {
+                            moves.add("x");
+                            //System.out.println("change x");
+                        }
+                        for (int l = 0; l < j; l++) {
+                            moves.add("y");
+                            //System.out.println("change y");
+                        }
+                        for (int n = 0; n < k; n++) {
+                            moves.add("z");
+                            //System.out.println("change z");
+                        }
+
+
+                        //System.out.println("found orientation");
+                        /*
+                        System.out.println("### - Corner (complete)");
+                        System.out.println(index);
+                        System.out.println(colour1);
+                        System.out.println(colour2);
+                        System.out.println(colour3);
+                        System.out.println(position);
+
+                         */
+                        return;
                     }
-                    for(int l=0; l<j; l++){
-                        moves.add("y");
-                    }
-                    return;
                 }
             }
         }
+        //System.out.println("not found orientation");
+
+        /*
+        System.out.println("### - Corner (uncomplete)");
+        System.out.println(index);
+        System.out.println(colour1);
+        System.out.println(colour2);
+        System.out.println(colour3);
+        System.out.println(position);
+
+         */
+
+
+        /*
         System.out.println("orientation not found - Corner");
+        System.out.println(colour1);
+        System.out.println(colour2);
+        System.out.println(colour3);
+        System.out.println(position);
+        System.out.println("");
+
+         */
     }
 
     public boolean checkOrientation(String newFace1, String newFace2, String newFace3){
+        /*
+        System.out.println("###");
+        System.out.println(newFace1);
+        System.out.println(face1);
+        System.out.println(" ");
+        System.out.println(newFace2);
+        System.out.println(face2);
+        System.out.println(" ");
+        System.out.println(newFace3);
+        System.out.println(face3);
+        System.out.println(" ");
+         */
         return (newFace1 == face1 && newFace2 == face2 && newFace3 == face3);
     }
 
     public boolean checkOrientation(String newFace1, String newFace2, String checkFace1, String checkFace2){
+        //System.out.println("FACES : ");
+        //System.out.println(newFace2);
+        //System.out.println(checkFace2);
         return (newFace1 == checkFace1 && newFace2 == checkFace2);
     }
 
-    public String move(int num, String move){
-        return xMove(num, move).concat(yMove(num,move));
+    public String move(int numx, int numy, int numz, String move){
+        return zMove(numz, (yMove(numy,xMove(numx, move))));
     }
 
     public String xMove (int num, String move) {
@@ -228,12 +329,34 @@ public class constructCubie {
         return move;
     }
 
+    public String zMove (int num, String move){
+        for(int i=0; i<num; i++) {
+            if (move == "Y") {
+                move = "G";
+            } else if (move == "G") {
+                move = "W";
+            } else if (move == "W") {
+                move = "B";
+            } else if (move == "B") {
+                move = "Y";
+            }
+        }
+        return move;
+    }
+
     public Matrix3f applyX(Matrix3f matrix){
-        return [xMatix] matrix;
+        Matrix3f xMatrix = new Matrix3f(1,0,0,0,0,-1,0,1,0);
+        return xMatrix.mul(matrix);
     }
 
     public Matrix3f applyY(Matrix3f matrix){
-        return [yMatix] matrix;
+        Matrix3f yMatrix = new Matrix3f(0,0,1,0,1,0,-1,0,0);
+        return yMatrix.mul(matrix);
+    }
+
+    public Matrix3f applyZ(Matrix3f matrix){
+        Matrix3f xMatrix = new Matrix3f(0,-1,0,1,0,0,0,0,1);
+        return xMatrix.mul(matrix);
     }
 
 

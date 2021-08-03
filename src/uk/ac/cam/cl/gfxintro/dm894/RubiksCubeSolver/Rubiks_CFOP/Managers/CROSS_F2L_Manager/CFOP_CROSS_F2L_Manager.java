@@ -13,7 +13,6 @@ public class CFOP_CROSS_F2L_Manager {
     public static String[] solveLayer(Cubie[][][] cubieList) {
 
         String[] moves1 = CFOP_CROSS_Manager.solveLayer(cubieList);
-        System.out.println(Arrays.toString(moves1));
 
         Cubie[][][] newCubieList = CFOP_Manager_Commands.copyCubieList(cubieList);
 
@@ -23,7 +22,6 @@ public class CFOP_CROSS_F2L_Manager {
 
         String[] moves = Arrays.copyOf(moves1, moves1.length + moves2.length);
         System.arraycopy(moves2, 0, moves, moves1.length, moves2.length);
-
 
         return moves;
     }

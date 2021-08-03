@@ -42,6 +42,9 @@ public abstract class Cubie {
 
         ind_cube_rotate_translate.getColumn(3,position);
         ind_cube_rotate_translate.set3x3(orientation);
+
+        this.orientation = orientation;
+        this.position = new Vector4f(i,j,k,1);
     }
 
     public boolean cubieCorrect(){
@@ -92,33 +95,28 @@ public abstract class Cubie {
         return index == cubieIndex;
     }
 
+    public boolean fullOrientationCorrect(){
+        boolean check;
+        ind_cube_rotate_translate.get3x3(orientation);
+        if(Math.round(orientation.get(1,1)) == 1 && Math.round(orientation.get(0,0)) == 1 && Math.round(orientation.get(2,2)) == 1){
+            check = true;
+        } else {
+            check = false;
+        }
+        return check;
+    }
+
+
+
     public boolean orientationCorrect(){
         boolean check;
         ind_cube_rotate_translate.get3x3(orientation);
-        /*
-        for(int i=0; i<3; i++){
-            for(int j=0; j<3; j++){
-                System.out.println(Math.round(orientation.get(i,j)));
-                if(i == j && Math.round(orientation.get(i,j)) == -1){
-                    check = false;
-                }
-            }
-            System.out.println("");
-        }
-
-         */
 
         if(Math.round(orientation.get(1,1)) == 1){
             check = true;
         } else {
             check = false;
         }
-
-        //System.out.println(position.x);
-        //System.out.println(position.y);
-        //System.out.println(position.z);
-        //System.out.println("");
-        //System.out.println("");
 
         return check;
     }
@@ -135,9 +133,9 @@ public abstract class Cubie {
 
         if(Math.round(position.x) == side){
             Matrix4f transformation = new Matrix4f(1,0,0,0,
-                                                            0,(float)Math.cos(Math.PI * scale),(float)Math.sin(Math.PI * scale * direction),0,
-                                                            0,(float)Math.sin(Math.PI * scale * direction * -1),(float)Math.cos(Math.PI * scale),0,
-                                                            0,0,0,1);
+                    0,(float)Math.cos(Math.PI * scale),(float)Math.sin(Math.PI * scale * direction),0,
+                    0,(float)Math.sin(Math.PI * scale * direction * -1),(float)Math.cos(Math.PI * scale),0,
+                    0,0,0,1);
 
             transformation.mul(ind_cube_rotate_translate,ind_cube_rotate_translate);
 
@@ -147,15 +145,13 @@ public abstract class Cubie {
 
     public void yMove(int side, int direction){
         position = new Vector4f();
-        //System.out.println("move");
-        //System.out.println(scale);
         ind_cube_rotate_translate.getColumn(3,position);
 
         if(Math.round(position.y) == side){
             Matrix4f transformation = new Matrix4f((float)Math.cos(Math.PI * scale),0,(float)Math.sin(Math.PI * scale * direction),0,
-                                                            0,1,0,0,
-                                                            (float)Math.sin(Math.PI * scale * direction * -1),0,(float)Math.cos(Math.PI * scale),0,
-                                                            0,0,0,1);
+                    0,1,0,0,
+                    (float)Math.sin(Math.PI * scale * direction * -1),0,(float)Math.cos(Math.PI * scale),0,
+                    0,0,0,1);
 
             transformation.mul(ind_cube_rotate_translate,ind_cube_rotate_translate);
 
@@ -171,9 +167,9 @@ public abstract class Cubie {
 
         if(Math.round(position.z) == side){
             Matrix4f transformation = new Matrix4f((float)Math.cos(Math.PI * scale),(float)Math.sin(Math.PI * scale * direction),0,0,
-                                                            (float)Math.sin(Math.PI * scale * direction * -1),(float)Math.cos(Math.PI * scale),0,0,
-                                                            0,0,1,0,
-                                                            0,0,0,1);
+                    (float)Math.sin(Math.PI * scale * direction * -1),(float)Math.cos(Math.PI * scale),0,0,
+                    0,0,1,0,
+                    0,0,0,1);
 
             transformation.mul(ind_cube_rotate_translate,ind_cube_rotate_translate);
 
@@ -391,14 +387,6 @@ public abstract class Cubie {
                 B();
                 break;
             case "q1":
-                /*
-                F();
-                RP();
-                FP();
-                R();
-
-                 */
-
                 U();
                 R();
                 UP();
@@ -407,19 +395,8 @@ public abstract class Cubie {
                 FP();
                 U();
                 F();
-
                 break;
             case "q2":
-                /*
-                y();
-                F();
-                RP();
-                FP();
-                R();
-                yP();
-
-                 */
-
                 y();
                 U();
                 R();
@@ -430,22 +407,8 @@ public abstract class Cubie {
                 U();
                 F();
                 yP();
-
-
                 break;
             case "q3":
-                /*
-                y();
-                y();
-                F();
-                RP();
-                FP();
-                R();
-                yP();
-                yP();
-
-
-                 */
                 y();
                 y();
                 U();
@@ -458,20 +421,8 @@ public abstract class Cubie {
                 F();
                 yP();
                 yP();
-
-
                 break;
             case "q4":
-                /*
-                yP();
-                F();
-                RP();
-                FP();
-                R();
-                y();
-
-                 */
-
                 yP();
                 U();
                 R();
@@ -482,18 +433,8 @@ public abstract class Cubie {
                 U();
                 F();
                 y();
-
-
                 break;
             case "e1":
-                /*
-                RP();
-                F();
-                R();
-                FP();
-
-                 */
-
                 UP();
                 LP();
                 UP();
@@ -502,22 +443,8 @@ public abstract class Cubie {
                 F();
                 U();
                 FP();
-
-
-                /*
-                UP();
-                LP();
-                U();
-                L();
-                U();
-                F();
-                UP();
-                FP();
-                 */
-
-
+                break;
             case "e2":
-
                 y();
                 UP();
                 LP();
@@ -528,31 +455,6 @@ public abstract class Cubie {
                 U();
                 FP();
                 yP();
-
-                /*
-                y();
-                RP();
-                F();
-                R();
-                FP();
-                yP();
-
-                 */
-                /*
-                y();
-                UP();
-                LP();
-                U();
-                L();
-                U();
-                F();
-                UP();
-                FP();
-                yP();
-
-                 */
-
-
                 break;
             case "e3":
                 y();
@@ -567,34 +469,6 @@ public abstract class Cubie {
                 FP();
                 yP();
                 yP();
-                /*
-                y();
-                y();
-                RP();
-                F();
-                R();
-                FP();
-                yP();
-                yP();
-
-                 */
-                /*
-                y();
-                y();
-                UP();
-                LP();
-                U();
-                L();
-                U();
-                F();
-                UP();
-                FP();
-                yP();
-                yP();
-
-                 */
-
-
                 break;
             case "e4":
                 yP();
@@ -607,32 +481,6 @@ public abstract class Cubie {
                 U();
                 FP();
                 y();
-
-
-                /*
-                yP();
-                RP();
-                F();
-                R();
-                FP();
-                y();
-
-                 */
-                /*
-                yP();
-                UP();
-                LP();
-                U();
-                L();
-                U();
-                F();
-                UP();
-                FP();
-                y();
-
-                 */
-
-
                 break;
             case "w1":
                 FP();
@@ -776,22 +624,6 @@ public abstract class Cubie {
                 FP();
                 UP();
                 F();
-                /*
-
-
-
-
-                RP();
-                F();
-                R();
-                FP();
-                UP();
-                RP();
-                F();
-                R();
-                FP();
-
-                 */
                 break;
             case "g2":
                 y();
@@ -809,21 +641,6 @@ public abstract class Cubie {
                 UP();
                 F();
                 yP();
-
-                /*
-                y();
-                RP();
-                F();
-                R();
-                FP();
-                UP();
-                RP();
-                F();
-                R();
-                FP();
-                yP();
-
-                 */
                 break;
             case "g3":
                 y();
@@ -843,22 +660,6 @@ public abstract class Cubie {
                 F();
                 yP();
                 yP();
-                /*
-                y();
-                y();
-                RP();
-                F();
-                R();
-                FP();
-                UP();
-                RP();
-                F();
-                R();
-                FP();
-                yP();
-                yP();
-
-                 */
                 break;
             case "g4":
                 yP();
@@ -876,20 +677,6 @@ public abstract class Cubie {
                 UP();
                 F();
                 y();
-                /*
-                yP();
-                RP();
-                F();
-                R();
-                FP();
-                UP();
-                RP();
-                F();
-                R();
-                FP();
-                y();
-
-                 */
                 break;
             case "":
                 break;

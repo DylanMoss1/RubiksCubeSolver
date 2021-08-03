@@ -2,7 +2,11 @@ package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.RubiksCubeSolver;
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_Cube_Manager.RubiksCubeManager;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.ConstructCubie;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.MyFrame;
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -25,6 +29,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class OpenGLApplication {
 
 	private static final float FOV_Y = (float) Math.toRadians(50);
+	public static ConstructCubie[][][] constructCubies = null;
 	protected static int WIDTH = 800, HEIGHT = 600;
 	private Camera camera;
 	private long window;
@@ -96,7 +101,27 @@ public class OpenGLApplication {
 		// This is where we are creating the meshes
 
 		rubiksCubeManager = new RubiksCubeManager();
-		rubiksCubeManager.createCube();
+
+		if(RubiksCubeSolver.webcam == false){
+			rubiksCubeManager.createCube();
+		} else {
+			Test.makeWebcamCube(rubiksCubeManager);
+		}
+
+
+		/*
+		if(withWebcam){
+			MyFrame.run(rubiksCubeManager);
+		} else {
+			rubiksCubeManager.createCube();
+		}
+
+		 */
+
+		//rubiksCubeManager.createCube();
+
+		//Test.makeCube2(rubiksCubeManager);
+
 
 		rubiksCubeManager.setSkyBox(skybox);
 

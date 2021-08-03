@@ -1,8 +1,12 @@
-package Webcam;//Credits to computervisionandjava for parts of webcam code
+package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam;
+
+//Credits to computervisionandjava for parts of webcam code
 //http://computervisionandjava.blogspot.com/2013/10/java-opencv-webcam.html
 
 //Credits to edu4java for parts of key listener code
 //http://www.edu4java.com/en/game/game4.html
+
+import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_Cube_Manager.RubiksCubeManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -16,11 +20,28 @@ public class MyFrame extends JFrame {
 
     public static boolean calibrationMode = false;
     public static boolean readFrame = false;
+    public static RubiksCubeManager rubiksCubeManager;
 
     /**
      * Launch the application.
      */
+
+
     public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    MyFrame frame = new MyFrame();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    public static void runFrame() {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

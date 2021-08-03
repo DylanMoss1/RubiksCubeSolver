@@ -11,16 +11,6 @@ public class Edge extends NonRenderCubie {
 
     @Override
     public boolean cubieCorrect(){
-
-        //System.out.println("checked");
-        //System.out.println(positionCorrect());
-        //System.out.println(orientationCorrect());
-        //System.out.println(" ");
-        if(positionCorrect() && orientationCorrect()){
-            return true;
-        } else {
-            //System.out.println(position.toString());
-            return false;
-        }
+        return positionCorrect() && orientationCorrect();
     }
 }
