@@ -13,7 +13,7 @@ public class OptimiseTest {
 
     public void solveLayer(){
 
-        String[] moves = new String[]{"R2"};
+        String[] moves = new String[]{"RP","R"};
 
         System.out.println("MOVES");
         System.out.println(Arrays.toString(moves));
@@ -101,7 +101,7 @@ public class OptimiseTest {
         moves = sanitise(moves);
         moves = split(moves);
 
-        System.out.println(Arrays.toString(moves));
+        //System.out.println(Arrays.toString(moves));
 
         LinkedList<String> oldMoves = new LinkedList<>();
         LinkedList<String> newMoves1;
@@ -118,7 +118,8 @@ public class OptimiseTest {
         boolean complete = false;
 
         while(!complete) {
-            System.out.println("repeat");
+            //System.out.println("loop");
+            //System.out.println("repeat");
             storeCount = 0;
             newMoves1 = new LinkedList<>();
             newMoves2 = new LinkedList<>();
@@ -131,6 +132,8 @@ public class OptimiseTest {
                         //System.out.println(oldMoves.get(i).substring(0,1));
                         rot += getRot(oldMoves.get(i + count));
                         count++;
+                        //System.out.println("rot");
+                        //System.out.println(rot);
                     } else {
                         /*
                         System.out.println(oldMoves.get(i).substring(0,1));
@@ -144,7 +147,7 @@ public class OptimiseTest {
                 }
                 if(storeCount <= 0) {
 
-                    System.out.println(rot);
+                    //System.out.println(rot);
                     newRot = rot % 4;
 
                     if(newRot < 0){
@@ -152,6 +155,8 @@ public class OptimiseTest {
                     }
 
                     storeCount = count;
+
+                    //System.out.println(newRot);
                     if(newRot != 0) {
                         //System.out.println(findRotMove(newRot, oldMoves.get(i)));
                         newMoves1.add(findRotMove(newRot, oldMoves.get(i)));
@@ -160,15 +165,33 @@ public class OptimiseTest {
                 storeCount--;
             }
 
+            boolean skip = false;
+
             for (int i = 0; i < newMoves1.size(); i++) {
-                if (i + 1 < newMoves1.size()) {
-                    if (!(newMoves1.get(i).equals(reverseMove(newMoves1.get(i+1))))){
+                //System.out.println(i);
+                if(skip == true){
+                    skip = false;
+                } else {
+                    if (i + 1 < newMoves1.size()) {
+                        //System.out.println(newMoves1.get(i));
+                        //System.out.println(newMoves1.get(i+1));
+                        //System.out.println(reverseMove(newMoves1.get(i+1)));
+                        if (!(newMoves1.get(i).equals(reverseMove(newMoves1.get(i+1))))){
+                            newMoves2.add(newMoves1.get(i));
+                        } else {
+                            //System.out.println("skip");
+                            skip = true;
+                        }
+                    } else {
+                        //System.out.println("Nope");
                         newMoves2.add(newMoves1.get(i));
                     }
-                } else {
-                    newMoves2.add(newMoves1.get(i));
                 }
             }
+            //System.out.println("new moves 2");
+            //System.out.println(newMoves2);
+
+
 
             if(oldMoves.equals(newMoves2)){
                 complete = true;
@@ -176,11 +199,13 @@ public class OptimiseTest {
 
             oldMoves = newMoves2;
         }
-
+        //System.out.println("---");
+        //System.out.println(newMoves2);
         String[] newMovesArr = new String[newMoves2.size()];
         for(int j=0; j<newMoves2.size(); j++){
             newMovesArr[j] = newMoves2.get(j);
         }
+        //System.out.println(newMovesArr);
         return newMovesArr;
     }
 
