@@ -21,6 +21,10 @@ Solving the cube at maximum speed:
 https://user-images.githubusercontent.com/65402135/130062170-b5231156-accd-46a9-9ebc-91fac7400e9b.mp4
 
 
+Video of a real life Rubik's cube being converted to a rendered cube
+
+https://user-images.githubusercontent.com/65402135/130064639-f770fbc2-ef6a-4dfe-b405-38010981c01d.mp4
+
 
 ## How it was made 
 
