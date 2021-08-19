@@ -14,17 +14,24 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
-
+/** Abstract class representing the 26 'cubies' that make up the Rubik's cube */
 public abstract class Cubie {
 
-    public int cubieIndex;
-    public LinkedList<String> path = new LinkedList<>();
-    public float scale = 0.5f;
+    public int cubieIndex;                                 //unique id of the Cubie (determined by solved position)
+    public LinkedList<String> path = new LinkedList<>();   //store of String set of moves to reach this position
+    public float scale = 0.5f;                             //Scale factor for rendering of the Cubie
 
-    public Matrix4f ind_cube_rotate_translate = new Matrix4f();
-    public Vector4f position = new Vector4f();
-    public Matrix3f orientation = new Matrix3f();
+    public Matrix4f ind_cube_rotate_translate = new Matrix4f();  //4x4 matrix representing the orientation and position of the Cubie
+    public Vector4f position = new Vector4f();                   //4x1 vector representing the position of the Cubie
+    public Matrix3f orientation = new Matrix3f();                //3x3 matrix representing the orientation of the Cubie 
 
+    /** Constructor for Cubies (default orientation)
+     *
+     * @param index  unique id
+     * @param i      x position [-1,1]
+     * @param j      y position [-1,1]
+     * @param k      z position [-1,1]
+     */
     public Cubie(int index, int i, int j, int k) {
 
         this.cubieIndex = index;
@@ -34,6 +41,14 @@ public abstract class Cubie {
         ind_cube_rotate_translate.getColumn(3,position);
     }
 
+    /** Constructor for Cubies (set orientation)
+     *
+     * @param index          unique id
+     * @param i              x position [-1,1]
+     * @param j              y position [-1,1]
+     * @param k              z position [-1,1]
+     * @param orientation    Cubie orientation represented as a 3x3 matrix
+     */
     public Cubie(int index, int i, int j, int k, Matrix3f orientation) {
 
         this.cubieIndex = index;
@@ -47,10 +62,18 @@ public abstract class Cubie {
         this.position = new Vector4f(i,j,k,1);
     }
 
+    /** Determines whether a Cubie is in its correct position
+     *
+     * @return A boolean of whether the position is correct
+     */
     public boolean cubieCorrect(){
         return false;
     }
 
+    /** Returns a new Cubie object that is a copy of this object
+     *
+     * @return A Cubie copy of this Cubie
+     */
     public Cubie copy(){
 
         int i = Math.round(position.x);
@@ -86,15 +109,19 @@ public abstract class Cubie {
         }
     }
 
-
+    /** Determines if the Cubie is in the correct position
+     *
+     * @return A boolean of whether the Cubie is in the correct position
+     */
     public boolean positionCorrect(){
-        int index = getCubieIndex();
-        //System.out.println(index);
-        //System.out.println(cubieIndex);
-        //System.out.println("");
-        return index == cubieIndex;
+        int index = getCubieIndex(); //Finds the index of the Cubie's current position
+        return index == cubieIndex;  //Compares this index with the Cubie's current index
     }
 
+    /** Determines if the full orientation of the Cubie is correct
+     *
+     * @return A boolean of whether the full orientation is correct
+     */
     public boolean fullOrientationCorrect(){
         boolean check;
         ind_cube_rotate_translate.get3x3(orientation);
@@ -106,8 +133,10 @@ public abstract class Cubie {
         return check;
     }
 
-
-
+    /** Determines if the shown orientation of the Cubie is correct
+     *
+     * @return A boolean of whether the shown orientation is correct
+     */
     public boolean orientationCorrect(){
         boolean check;
         ind_cube_rotate_translate.get3x3(orientation);
@@ -121,10 +150,19 @@ public abstract class Cubie {
         return check;
     }
 
+    /** Find the index of the position of the Cubie
+     *
+     * @return An int representing this id
+     */
     public int getCubieIndex(){
         return Math.round(position.x) + 1 + (Math.round(position.y) + 1) * 3 + (Math.round(position.z) + 1) * 9;
     }
 
+    /** Make a physical rotation of one of the side's of the cube in the x direction (on a set of Cubies)
+     *
+     * @param side         side of the cube to move [-1, 1]
+     * @param direction    direction to rotate the side
+     */
     public void xMove(int side, int direction){
 
         position = new Vector4f();
@@ -143,6 +181,11 @@ public abstract class Cubie {
         }
     }
 
+    /** Make a physical rotation of one of the side's of the cube in the y direction (on a set of Cubies)
+     *
+     * @param side         side of the cube to move [-1, 1]
+     * @param direction    direction to rotate the side
+     */
     public void yMove(int side, int direction){
         position = new Vector4f();
         ind_cube_rotate_translate.getColumn(3,position);
@@ -159,6 +202,11 @@ public abstract class Cubie {
         }
     }
 
+    /** Make a physical rotation of one of the side's of the cube in the z direction (on a set of Cubies)
+     *
+     * @param side         side of the cube to move [-1, 1]
+     * @param direction    direction to rotate the side
+     */
     public void zMove(int side, int direction){
 
         position = new Vector4f();
@@ -177,6 +225,10 @@ public abstract class Cubie {
         }
     }
 
+    /** Rotate the cube without rotating any sides in the x direction (on a set of Cubies)
+     *
+     * @param direction   direction to rotate the cube
+     */
     public void xRotate(int direction){
 
         position = new Vector4f();
@@ -193,6 +245,10 @@ public abstract class Cubie {
         ind_cube_rotate_translate.getColumn(3,position);
     }
 
+    /** Rotate the cube without rotating any sides in the y direction (on a set of Cubies)
+     *
+     * @param direction   direction to rotate the cube
+     */
     public void yRotate(int direction){
 
         position = new Vector4f();
@@ -209,6 +265,10 @@ public abstract class Cubie {
 
         ind_cube_rotate_translate.getColumn(3,position);
     }
+
+    /** Convert Rubik's cube moves into Cubie transformations
+     * See https://ruwix.com/the-rubiks-cube/notation/ for notation details
+     * Note that P represents prime (')*/
 
     public void R(){
         xMove(1,-1);
@@ -292,7 +352,10 @@ public abstract class Cubie {
         yRotate(-1);
     }
 
-
+    /** Convert Rubik's cube String notation into Rubik's cube moves
+     *
+     * @param move   the String notation of a Rubik's cube move
+     */
     public void moveCube(String move){
 
         switch(move){
