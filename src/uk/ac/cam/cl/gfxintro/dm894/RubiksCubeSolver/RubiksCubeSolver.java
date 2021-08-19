@@ -1,19 +1,20 @@
 package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver;
 
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.OpenGLApplication;
-import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rubiks_Cube_Manager.RubiksCubeManager;
-import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Webcam.MyFrame;
 
+/* Main class for setting up the OpenGL application */
 public class RubiksCubeSolver {
 
-    public static int frame_delay = 1;
-    public static boolean webcam = false;
+    public static int frame_delay = 1;  //Number of millisecond delays between frame renders
+    public static boolean webcam = false;  //Whether to set up the webcam pipeline or not
 
+    /* Raises error at incorrect usage of this program */
     public static void usageError() {
         System.err.println("USAGE: <RubiksCubeSolver> [--output OUTPUT]");
         System.exit(-1);
     }
 
+    /* Accepts all program inputs */
     public static void main(String[] args) {
         // We should have an even number of arguments
         if (args.length % 2 != 0)
@@ -34,25 +35,24 @@ public class RubiksCubeSolver {
         run();
     }
 
+    /* Sets up OpenGL application in screenshot or render mode */
     public static void run(){
-
         String output = null;
-
         OpenGLApplication app = null;
         try {
             app = new OpenGLApplication();
 
-            if (output != null) {
+            if (output != null) {  //If an output is specified, take a screenshot of the scene
                 app.initialize();
                 app.takeScreenshot(output);
             } else {
-                app.run();
+                app.run();  //Otherwise run the main the OpenGL application
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (app != null)
-                app.stop();
+                app.stop();  //Release OpenGL resources at the end of the program's lifecycle
         }
     }
 }
