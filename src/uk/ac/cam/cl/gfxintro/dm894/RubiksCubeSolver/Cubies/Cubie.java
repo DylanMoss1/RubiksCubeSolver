@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
-/** Abstract class representing the 26 'cubies' that make up the Rubik's cube */
+/** Abstract class representing the 27 'cubies' that make up the Rubik's cube (including the unseen piece) */
 public abstract class Cubie {
 
     public int cubieIndex;                                 //unique id of the Cubie (determined by solved position)
