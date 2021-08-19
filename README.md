@@ -11,7 +11,7 @@ It does this with the following steps
  
 ## Program in action 
 
-Solving the cube at fast speed
+Solving the cube
 
 https://user-images.githubusercontent.com/65402135/130063272-d113e056-9c51-4d48-9bce-4c7367998817.mp4
 
