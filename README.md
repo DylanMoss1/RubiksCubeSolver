@@ -9,6 +9,8 @@ It does this with the following steps
 * Determines the steps needed to solve the cube from this scrambled state
 * Returns the list of steps as well as carrying out these steps on the rendered Rubik's cube  
  
+https://user-images.githubusercontent.com/65402135/130062170-b5231156-accd-46a9-9ebc-91fac7400e9b.mp4
+
 ## How it was made 
 
 This project was made using Java along with OpenGL for the rendering.
