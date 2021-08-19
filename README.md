@@ -12,10 +12,12 @@ It does this with the following steps
 ## Program in action 
 
 Solving the cube at fast speed
-https://user-images.githubusercontent.com/65402135/130063272-d113e056-9c51-4d48-9bce-4c7367998817.mp4
+
+!https://user-images.githubusercontent.com/65402135/130063272-d113e056-9c51-4d48-9bce-4c7367998817.mp4
 
 
 Solving the cube at maximum speed: 
+
 https://user-images.githubusercontent.com/65402135/130062170-b5231156-accd-46a9-9ebc-91fac7400e9b.mp4
 
 
