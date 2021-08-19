@@ -2,19 +2,19 @@ package uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver;
 
 import uk.ac.cam.cl.gfxintro.dm894.RubiksCubeSolver.Rendering.OpenGLApplication;
 
-/* Main class for setting up the OpenGL application */
+/** Main class for setting up the OpenGL application */
 public class RubiksCubeSolver {
 
     public static int frame_delay = 1;  //Number of millisecond delays between frame renders
     public static boolean webcam = false;  //Whether to set up the webcam pipeline or not
 
-    /* Raises error at incorrect usage of this program */
+    /** Raises error at incorrect usage of this program */
     public static void usageError() {
         System.err.println("USAGE: <RubiksCubeSolver> [--output OUTPUT]");
         System.exit(-1);
     }
 
-    /* Accepts all program inputs */
+    /** Accepts all program inputs */
     public static void main(String[] args) {
         // We should have an even number of arguments
         if (args.length % 2 != 0)
@@ -35,7 +35,7 @@ public class RubiksCubeSolver {
         run();
     }
 
-    /* Sets up OpenGL application in screenshot or render mode */
+    /** Sets up OpenGL application in screenshot or render mode */
     public static void run(){
         String output = null;
         OpenGLApplication app = null;
