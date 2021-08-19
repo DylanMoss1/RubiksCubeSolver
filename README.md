@@ -55,6 +55,6 @@ I made this project in the Christmas holidays after my OOP and Java university c
 
 I have always loved solving Rubik's cubes and creating a program to solve them has always been an itch I've wanted to scratch, during this holiday I finally felt like I'd learnt all the skills I needed to take on this challenge. 
 
-This is the largest project I had worked on at the time which allowed me to learn how to manage and structure large projects. The code also became complicated very quickly so learning how to effectively document my code along the way was another useful skill I learnt. 
+This is the largest project I had worked on at the time which allowed me to learn how to manage and structure large projects. The code also became complicated very quickly so learning how to effectively document my code was another useful skill I learnt. 
 
 I greatly enjoyed this project and would love to come back to it in the future to optimise and add more features to it. 
