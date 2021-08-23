@@ -1,6 +1,6 @@
 # Rubik's Cube Solver
  
-This is a program that is able to import the shuffled state of a real life Rubik's cube, render it on the screen and solve it. 
+This is a program that is able to take a video of a real life scrambled Rubik's cube, render it on the screen and show the steps of how to solve the cube on this simulation.
 
 It does this with the following steps 
 * Records a video of a mixed up Rubik's Cube with the camera's webcam 
@@ -55,6 +55,6 @@ I made this project in the Christmas holidays after my OOP and Java university c
 
 I have always loved solving Rubik's cubes and creating a program to solve them has always been an itch I've wanted to scratch, during this holiday I finally felt like I'd learnt all the skills I needed to take on this challenge. 
 
-This is the largest project I had worked on at the time which allowed me to learn how to manage and structure large projects. The code also became complicated very quickly so learning how to effectively document my code was another useful skill I learnt. 
+This is the largest project I had worked on at the time which allowed me to learn how to structure and manage a software development project. The code also became complicated very quickly so learning how to effectively document my code was another useful skill I learnt. 
 
 I greatly enjoyed this project and would love to come back to it in the future to optimise and add more features to it. 
