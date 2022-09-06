@@ -47,7 +47,7 @@ I wanted to implement a straight CFOP solution using F2L but found this to be qu
 
 In English, my solution solves the cube in layers, first by solving the bottom layer, then the middle then the top layer. The bottom layer is solved by making a cross shape with the edge pieces and then filling in the rest of the corner pieces in the bottom. The middle layer is solved by filling in the remaining gaps with the edge pieces. Finally, the top layer is solved by orientating all the remaining pieces and then moving them around into their correct positions. 
 
-For fun I also tried implementing neuro-evolutionary neural networks to see if they could make any progress but found the results to be too unpredicatable and so stuck to manually implementation.
+For fun I also tried implementing neuro-evolutionary neural networks to see if they could make any progress but found the results to be too unpredicatable and so stuck to my manual implementation.
 
 ## Why I made it and What I learnt
 
