@@ -6,6 +6,8 @@ The program takes in a video of a real-life scrambled Rubik's cube, converts thi
 
 I built both the Rubik's cube solver and simulation model from scratch! 
 
+Video of Rubik's Cube -> 3D render of the cube -> 3D simulation solve of the cube
+
 ### Program in action 
 
 **Video of real-life Rubik's cube:**
